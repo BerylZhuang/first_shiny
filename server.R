@@ -18,6 +18,15 @@ shinyServer(function(input, output) {
 		selectInput("country_from_gapminder", "Country", as.list(levels(gDat$country)))
 	})
 	
+
+	
+# 	output$multiple_countries <- renderUI({
+# 				if(is.null(input$choose_multiple_countries)) {
+# 					return(NULL)
+# 				}
+# 		print(input$choose_multiple_countries)
+# 	})
+		
 # 	#2 reactive input from user (pick country to display) and subset the table for tabke display and plots
 # 	one_country_data <- reactive({
 # 		if(is.null(input$country_from_gapminder)) {
@@ -42,8 +51,8 @@ shinyServer(function(input, output) {
 		one_country_data()
 	})
 	
-	#4 render text output of the selected country   #ui.R: textOutput("output_country")
-	output$output_country <- renderText({
+	#4 render text output of the selected one country   #ui.R: textOutput("output_one_country")
+	output$output_one_country <- renderText({
 		if (is.null(input$country_from_gapminder)){
 			return(NULL)
 		}
@@ -66,7 +75,14 @@ shinyServer(function(input, output) {
 		)
 	})
 	
-	
+	#4 render text output of the seleted multiple countries   #ui.R: textOutput("output_multiple_countries")
+	output$output_multiple_countries <- renderText({
+		if (is.null(input$choose_multiple_countries)){
+			return(NULL)
+		}
+		paste("mutilple countries selected: ", 
+					input$choose_multiple_countries)
+	})
 	
 })
 
