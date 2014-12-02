@@ -80,8 +80,9 @@ shinyServer(function(input, output) {
 		if (is.null(input$choose_multiple_countries)){
 			return(NULL)
 		}
-		paste("mutilple countries selected: ", 
-					input$choose_multiple_countries)
+		a <- "Multiple countries selected: "
+		b <- paste(input$choose_multiple_countries, collapse =", ")
+		paste(a, b)
 	})
 	
 })

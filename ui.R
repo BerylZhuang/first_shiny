@@ -6,15 +6,7 @@ shinyUI(fluidPage(
 			h4("Choose one country from Gapminder data set"),
 			uiOutput("choose_country"),     # for 1 country plot
 			
-			h4("Select multiple countries"),
-			selectizeInput(
-				"choose_multiple_countries", 
-				"Select up to 5 countries for comparison", 
-				choices = as.list(levels(gDat$country)), 
-				multiple = TRUE,
-				options = list(maxItems = 5)
-			),
-			
+
 # commented out the year slider 			
 # 			sliderInput("year_range", 
 # 									label = "Range of years:",
@@ -27,15 +19,31 @@ shinyUI(fluidPage(
 # use dateRangeInput with calender  #2.1
 			h4("Select date range"),
 			dateRangeInput('dateRange',
-										 label = 'Date range input: yyyy-mm-dd',
-										 start = "1957-01-01", end = "2007-01-01"
-										 )
-		),
-		mainPanel(h3(textOutput("output_one_country")),           #1.1
+										 label = 'Date range input: yyyy',
+										 start = "1957-01-01", end = "2007-01-01",
+										 format = "yyyy"
+										 ),
 
+			h4("Select multiple countries"),
+			selectizeInput(
+				"choose_multiple_countries", 
+				"Select up to 5 countries for comparison", 
+				choices = as.list(levels(gDat$country)), 
+				multiple = TRUE,
+				options = list(maxItems = 5)
+			)
+
+		),
+
+
+	tabsetPanel(
+			tabPanel("oneCountryData", 
+							h3(textOutput("output_one_country")),           #1.1
 							plotOutput("ggplot_gdppc_vs_country"),
-							tableOutput("gapminder_table"),
-							h3(textOutput("output_multiple_countries"))
+							tableOutput("gapminder_table")),
+			tabPanel("multiCountryData",
+							h3(textOutput("output_multiple_countries")))
 		)
 	)
 ))
+
