@@ -1,12 +1,17 @@
 # load packages
 library(ggplot2)
+library(dplyr)
 
 #source helper funcitons
 
-source("helper_functions.R")
+
 
 # load data
-gDat <- readRDS("data/gapminder.rds")
+# gdURL <- "http://tiny.cc/gapminder"
+# gDat <- read.delim(file = gdURL)
+
+# I was having trouble to get the app to read the local data
+gDat <- readRDS("data//gapminder.rds")
 
 
 
@@ -75,14 +80,50 @@ shinyServer(function(input, output) {
 		)
 	})
 	
-	#4 render text output of the seleted multiple countries   #ui.R: textOutput("output_multiple_countries")
+	#7 render text output of the seleted multiple countries   #ui.R: textOutput("output_multiple_countries")
 	output$output_multiple_countries <- renderText({
 		if (is.null(input$choose_multiple_countries)){
 			return(NULL)
 		}
-		a <- "Multiple countries selected: "
+		a <- "Multiple countries select"
 		b <- paste(input$choose_multiple_countries, collapse =", ")
 		paste(a, b)
+	})
+
+
+	
+	# 6 Replace the slider for the years instead with the widget dateRangeInput.
+	output$dateRangeText  <- renderText({
+		paste("input$dateRange is", 
+					paste(as.character(input$dateRange), collapse = " to ")
+		)
+	})
+	
+
+	multi_country_data <- reactive({
+		if(is.null(input$choose_multiple_countries)) {
+			return(NULL)
+		}
+		subset(gDat, country %in% input$choose_multiple_countries)
+	})
+
+#8 render the plot, #ui.R: plotOutput("ggplot_gdppc_vs_country")
+output$ggplot_gdppc_vs_country_multiple <- renderPlot({
+	if(is.null(multi_country_data())) {
+		return(NULL)
+	}
+	else if(input$to_facet == TRUE){
+		p <-  ggplot(multi_country_data(), aes(x = year, y = gdpPercap))
+		p + 
+			geom_point(aes(colour = country)) + 
+			facet_wrap(~ country) + 
+			geom_smooth(method = "lm", se = FALSE)	
+	}
+	else {
+		p <-  ggplot(multi_country_data(), aes(x = year, y = gdpPercap))
+		p + geom_point(aes(colour = country)) + 
+			geom_smooth(method = "lm", se = FALSE)	
+	}
 	})
 	
 })
@@ -90,3 +131,4 @@ shinyServer(function(input, output) {
 
 #------------------------
 #------------------------
+

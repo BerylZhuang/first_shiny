@@ -31,7 +31,12 @@ shinyUI(fluidPage(
 				choices = as.list(levels(gDat$country)), 
 				multiple = TRUE,
 				options = list(maxItems = 5)
-			)
+				),
+
+			h4("Facet plots by country"),
+			radioButtons("to_facet", label = "Facet plots by country",
+						 choices = c("Yes" = TRUE, "No" = FALSE)
+							)
 
 		),
 
@@ -42,7 +47,8 @@ shinyUI(fluidPage(
 							plotOutput("ggplot_gdppc_vs_country"),
 							tableOutput("gapminder_table")),
 			tabPanel("multiCountryData",
-							h3(textOutput("output_multiple_countries")))
+							h3(textOutput("output_multiple_countries")),
+							plotOutput("ggplot_gdppc_vs_country_multiple"))
 		)
 	)
 ))
