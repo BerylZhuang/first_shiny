@@ -1,2 +1,2 @@
 
-[Gapminder app] (https://berylzhuang.shinyapps.io/Gapminder_app/)
+Link to [Gapminder shinny app] (https://berylzhuang.shinyapps.io/Gapminder_app/)
